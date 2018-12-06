@@ -335,3 +335,12 @@ work$GENDER <- as.factor(work$GENDER)
 
 # Display summary of work$GENDER again
 summary(work$GENDER)
+
+# Load the foreign package
+library(foreign)
+
+# Import florida.dta and name the resulting data frame florida
+florida=read.dta("florida.dta")
+
+# Check tail() of florida
+tail(florida)
