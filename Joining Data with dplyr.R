@@ -413,3 +413,24 @@ Appearances %>%
   left_join(HallOfFame, by = "playerID") %>% 
   # Filter for unusual observations
   filter(last_year >= yearID)
+  
+  $df1
+  x y
+1 6 A
+2 7 B
+3 8 C
+
+$df2
+   x y
+1  9 D
+2 10 E
+3 11 F
+bind_rows (lst, .id = "source")
+Output: 
+  source  x y
+1    df1  6 A
+2    df1  7 B
+3    df1  8 C
+4    df2  9 D
+5    df2 10 E
+6    df2 11 F
