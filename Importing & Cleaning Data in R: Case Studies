@@ -1,0 +1,35 @@
+# Import sales.csv: sales
+sales=read.csv("sales.csv", stringsAsFactors = FALSE)
+
+#dim() returns the dimensions of an object
+#head() displays the first part of an object
+#names() returns the names associated with an object
+
+# View dimensions of sales
+dim(sales)
+
+# Inspect first 6 rows of sales
+head(sales,6)
+
+# View column names of sales
+names(sales)
+
+# Look at structure of sales
+str(sales)
+
+# View a summary of sales
+summary(sales)
+
+# Load dplyr
+library(dplyr)
+
+# Get a glimpse of sales
+glimpse(sales)
+
+my_df[1:5, ] # First 5 rows of my_df
+my_df[, 4]   # Fourth column of my_df
+my_df[-(1:5), ] # Omit first 5 rows of my_df
+my_df[, -4]     # Omit fourth column of my_df
+
+# Remove the first column of sales: sales2
+sales2 <- sales[,-1]
