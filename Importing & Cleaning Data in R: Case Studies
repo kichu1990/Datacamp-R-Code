@@ -232,3 +232,27 @@ plastic <- str_detect(food3$packaging, "plasti")
 
 # Print the sum of plastic
 sum(plastic)
+
+# Load the gdata package
+library(gdata)
+
+# Import the spreadsheet: att
+att <- read.xls("attendance.xls")
+
+# Print the column names 
+names(att)
+
+# Print the first 6 rows
+head(att,6)
+
+# Print the last 6 rows
+tail(att,6)
+
+# Print the structure
+str(att)
+
+# Create remove
+remove <- c(3, 56:59)
+
+# Create att2
+att2 <- att[-remove, ]
