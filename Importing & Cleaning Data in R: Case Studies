@@ -33,3 +33,41 @@ my_df[, -4]     # Omit fourth column of my_df
 
 # Remove the first column of sales: sales2
 sales2 <- sales[,-1]
+
+# Define a vector of column indices: keep
+keep <- 5:(ncol(sales2) - 15)
+
+# Subset sales2 using keep: sales3
+sales3 <- sales2[, keep]
+
+# Load tidyr
+library(tidyr)
+
+# Split event_date_time: sales4
+sales4 <- separate(sales3, event_date_time,
+                   c("event_dt","event_time"), sep = " ")
+
+# Split sales_ord_create_dttm: sales5
+sales5 <- separate(sales4, sales_ord_create_dttm,
+                   c("ord_create_dt","ord_create_time"), sep = " ")
+
+# Define an issues vector
+issues <- c(2516, 3863, 4082, 4183)
+
+# Print values of sales_ord_create_dttm at these indices
+sales3$sales_ord_create_dttm[issues]
+
+# Print a well-behaved value of sales_ord_create_dttm
+sales3$sales_ord_create_dttm[2517]
+
+# Load stringr
+library(stringr)
+
+# Find columns of sales5 containing "dt": date_cols
+date_cols <- str_detect(names(sales5), "dt")
+
+# Load lubridate
+library(lubridate)
+
+# Coerce date columns into Date objects
+sales5[, date_cols] <- lapply(sales5[, date_cols], ymd)
