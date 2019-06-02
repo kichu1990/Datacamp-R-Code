@@ -1,0 +1,45 @@
+# What is the current date?
+Sys.Date()
+
+# What is the current date and time?
+Sys.time()
+
+# Create the variable today
+today <- Sys.Date()
+
+# Confirm the class of today
+class(today)
+
+# Create crash
+crash <- as.Date("2008-09-29")
+
+# Print crash
+crash
+
+# crash as a numeric
+as.numeric(crash)
+
+# Current time as a numeric
+as.numeric(Sys.time())
+
+# Incorrect date format
+as.Date("09/29/2008")
+
+# Create dates from "2017-02-05" to "2017-02-08" inclusive
+dates <- as.Date(c("2017-02-05","2017-02-06","2017-02-07",
+                   "2017-02-08"))
+
+# Add names to dates
+names(dates) <- c("Sunday", "Monday", "Tuesday", "Wednesday")
+
+# Subset dates to only return the date for Monday
+dates["Monday"]
+
+# "08,30,30"
+as.Date("08,30,1930", format = "%m, %d, %Y")
+
+# "Aug 30,1930"
+as.Date("Aug 30,1930", format = "%b %d, %Y")
+
+# "30aug1930"
+as.Date("30aug1930", format = "%d%b%Y")
