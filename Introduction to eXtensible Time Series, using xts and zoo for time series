@@ -93,3 +93,4 @@ sun <- read.zoo(tmp, sep = ",", FUN = as.yearmon)
 
 # Convert sun into xts. Save this as sun_xts
 sun_xts <- as.xts(sun)
+
