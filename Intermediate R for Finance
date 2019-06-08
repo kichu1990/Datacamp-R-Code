@@ -215,6 +215,7 @@ yes = 1, no = 0)
 # Apple test
 stocks$apple_date <- ifelse(test = stocks$apple >117 , yes = stocks$date, no = NA)
 
+
 # Print stocks
 print(stocks)
 
@@ -223,3 +224,219 @@ class(stocks$apple_date) <- "Date"
 
 # Print stocks again
 print(stocks)
+
+# Stock price
+stock_price <- 126.34
+
+repeat {
+  # New stock price
+  stock_price <- stock_price * runif(1, .985, 1.01)
+  print(stock_price)
+  
+  # Check
+  if(stock_price < 125) {
+    print("Stock price is below 124.5! Buy it while it's cheap!")
+    break
+  }
+}
+
+#While loops are slightly different from repeat loops. Like if statements, you specify the condition for them to run at the very 
+#beginning. There is no need for a break statement because the condition is checked at each iteration.
+
+# Initial debt
+debt <- 5000
+
+# While loop to pay off your debt
+while (debt > 0) {
+  debt <- debt - 500
+  print(paste("Debt remaining", debt))
+}
+
+debt <- 5000    # initial debt
+i <- 0          # x axis counter
+x_axis <- i     # x axis
+y_axis <- debt  # y axis
+
+# Initial plot
+plot(x_axis, y_axis, xlim = c(0,10), ylim = c(0,5000))
+
+# Graph your debt
+while (debt > 0) {
+
+  # Updating variables
+  debt <- debt - 500
+  i <- i + 1
+  x_axis <- c(x_axis, i)
+  y_axis <- c(y_axis, debt)
+  
+  # Next plot
+  plot(x_axis, y_axis, xlim = c(0,10), ylim = c(0,5000))
+}
+
+# debt and cash
+debt <- 5000
+cash <- 4000
+
+# Pay off your debt...if you can!
+while (debt > 0) {
+  debt <- debt - 500
+  cash <- cash - 500
+  print(paste("Debt remaining:", debt, "and Cash remaining:", cash))
+
+  if (cash == 0) {
+    print("You ran out of cash!")
+    break
+  }
+}
+
+# Sequence
+seq <- c(1:10)
+
+# Print loop
+for (value in seq) {
+    print(value)
+}
+
+# A sum variable
+sum <- 0
+
+# Sum loop
+for (value in seq) {
+    sum <- sum + value
+    print(sum)
+}
+
+# Loop over stock rows
+for (row in 1:nrow(stock)) {
+    price <- stock[row, "apple"]
+    date  <- stock[row, "date"]
+
+    if(price > 116) {
+        print(paste("On", date, 
+                    "the stock price was", price))
+    } else {
+        print(paste("The date:", date, 
+                    "is not an important day!"))
+    }
+}
+
+# Print out corr
+corr
+
+# Create a nested loop
+for(row in 1:nrow(corr)) {
+    for(col in 1:ncol(corr)) {
+        print(paste(colnames(corr)[col], "and", rownames(corr)[row],
+                    "have a correlation of", corr[row,col]))
+    }
+}
+
+# Print apple
+print(apple)
+
+
+# Loop through apple. Next if NA. Break if above 117.
+for (value in apple) {
+    if(is.na(value)) {
+        print("Skipping NA")
+        next
+    }
+    
+    if(value > 117) {
+        print("Time to sell!")
+        break
+    } else {
+        print("Nothing to do here!")
+    }
+}
+
+# Stock price
+stock_price <- 67.55
+
+repeat {
+  # New stock price
+  stock_price <- stock_price * .995
+  
+ 
+  # Check
+  if(stock_price < 66) {
+    print("Stock price is below 66! Buy it while it's cheap!")
+    break
+  }
+  print(stock_price)
+}
+
+
+# Round 5.4
+round(5.4)
+
+# Round 5.4 with 1 decimal place
+round(5.4,digits = 1)
+
+# numbers
+numbers <- c(.002623, pi, 812.33345)
+
+# Round numbers to 3 decimal places
+round(numbers,digits = 3)
+
+
+# cbind() the stocks
+stocks <- cbind(apple, ibm, micr)
+
+# cor() to create the correlation matrix
+cor(stocks)
+
+# All at once! Nest cbind() inside of cor()
+cor(cbind(apple, ibm, micr))
+
+# subset help
+?subset
+
+# Sys.time help
+?Sys.time
+
+
+# Percent to decimal function
+percent_to_decimal <- function(percent) {
+    percent / 100
+}
+
+# Use percent_to_decimal() on 6
+percent_to_decimal(6)
+
+# Example percentage
+pct <- 8
+
+# Use percent_to_decimal() on pct
+percent_to_decimal(pct)
+
+
+# Percent to decimal function
+percent_to_decimal <- function(percent, digits = 2) {
+    decimal <- percent / 100
+    
+    round(decimal, digits)
+}
+
+# percents
+percents <- c(25.88, 9.045, 6.23)
+
+# percent_to_decimal() with default digits
+percent_to_decimal(percents)
+
+# percent_to_decimal() with digits = 4
+percent_to_decimal(percents, digits = 4)
+
+
+# Present value function
+pv <- function(cash_flow, i, year) {
+    
+    # Discount multiplier
+    mult <- 1 + percent_to_decimal(i)
+    
+    # Present value calculation
+    cash_flow * mult ^ -year
+}
+
+# Calculate a present value
+pv(1200, 7, 3)
