@@ -440,3 +440,100 @@ pv <- function(cash_flow, i, year) {
 
 # Calculate a present value
 pv(1200, 7, 3)
+
+# Print stock_return
+stock_return
+
+# lapply to change percents to decimal
+lapply(stock_return, FUN = percent_to_decimal)
+
+
+# Print stock_return
+stock_return
+
+# lapply to get the average returns
+lapply(stock_return, FUN = mean)
+
+# Sharpe ratio
+sharpe <- function(returns) {
+    (mean(returns) - .0003) / sd(returns)
+}
+
+# lapply to get the sharpe ratio
+lapply(stock_return, FUN = sharpe)
+
+
+# sharpe
+sharpe <- function(returns, rf = .0003) {
+    (mean(returns) - rf) / sd(returns)
+}
+
+# First lapply()
+lapply(stock_return, FUN = sharpe, rf = .0004)
+
+# Second lapply()
+lapply(stock_return, FUN = sharpe, rf = .0009)
+
+#lapply() is great, but sometimes you might want the returned data in a nicer form than a list. For instance, with the sharpe ratio, 
+#wouldn't it be great if the returned sharpe ratios were in a vector rather than a list? Further analysis would likely be easier!
+
+
+# lapply() on stock_return
+lapply(stock_return, FUN = sharpe)
+
+# sapply() on stock_return
+sapply(stock_return, FUN = sharpe)
+
+# sapply() on stock_return with optional arguments
+sapply(stock_return, FUN = sharpe, simplify = FALSE, USE.NAMES = FALSE)
+
+
+# Market crash with as.Date()
+market_crash <- list(dow_jones_drop = 777.68, 
+                     date = as.Date("2008-09-28"))
+                     
+# Find the classes with sapply()
+sapply(market_crash,FUN = class)
+
+# Market crash with as.POSIXct()
+market_crash2 <- list(dow_jones_drop = 777.68, 
+                      date = as.POSIXct("2008-09-28"))
+
+# Find the classes with lapply()
+lapply(market_crash2,FUN = class)
+#date in market_crash2 has multiple classes. Why couldn't sapply() simplify this?
+
+# Find the classes with sapply()
+sapply(market_crash2,FUN = class)
+
+# sapply() failed to simplify because the date element of market_crash2 had two classes (POSIXct and POSIXt). Notice, however, that no 
+#error was thrown! If a function you had written expected a simplified vector to be returned by sapply(), this would be confusing.
+#To account for this, there is a more strict apply function called vapply(), which contains an extra argument FUN.VALUE where you 
+#can specify the type and length of the output that should be returned each time your applied function is called.
+
+
+# Market crash with as.POSIXct()
+market_crash2 <- list(dow_jones_drop = 777.68, 
+                      date = as.POSIXct("2008-09-28"))
+
+# Find the classes with sapply()
+sapply(market_crash2,FUN = class)
+
+# Find the classes with vapply()
+vapply(market_crash2,FUN = class,FUN.VALUE=character(1))
+
+
+# Sharpe ratio for all stocks
+vapply(stock_return, sharpe, FUN.VALUE = numeric(1))
+
+# Summarize Apple
+summary(stock_return$apple)
+
+# Summarize all stocks
+vapply(stock_return, summary, FUN.VALUE = numeric(2))
+
+
+# Max and min
+vapply(stock_return, 
+       FUN = function(x) { c(max(x), min(x)) }, 
+       FUN.VALUE = numeric(2))
