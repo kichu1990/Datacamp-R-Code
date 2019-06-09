@@ -76,6 +76,8 @@ head(am2)
 # Create dat by reading tmp_file
 dat <- read.csv(tmp_file)
 
+xts_dat <- xts(dat, order.by = as.POSIXct(rownames(dat)))
+
 # Convert dat into xts
 xts(dat, order.by = as.Date(rownames(dat), "%m/%d/%Y"))
 
