@@ -102,3 +102,86 @@ sun <- read.zoo(tmp, sep = ",", FUN = as.yearmon)
 # Convert sun into xts. Save this as sun_xts
 sun_xts <- as.xts(sun)
 
+# The ISO-8601 standard is the internationally recognized and accepted way to represent dates and times. The standard allows for a common
+# format to not only describe dates, but also to represent ranges and repeating intervals.
+# xts makes use of this standard for all extract and replace operations. This makes code both easy to write and easy to maintain. 
+# It also makes for very concise expression of date ranges and intervals.
+
+# One of the most powerful aspects of working with time series in xts is the ability to quickly and efficiently specify dates and time 
+# ranges for subsetting.Date ranges can be extracted from xts objects by simply specifying the period(s) you want using special character
+# strings in your subset.
+
+# Select all of 2016 from x
+x_2016 <- x["2016"]
+
+# Select January 1, 2016 to March 22, 2016
+jan_march <- x["2016/2016-03-22"]
+
+# Verify that jan_march contains 82 rows
+82 == length(jan_march)
+
+# Extract all data between 8AM and 10AM
+morn_2010 <- irreg["T08:00/T10:00"]
+
+# Extract the observations for January 13th, 2010
+morn_2010["2010-01-13"]
+
+# Subset x using the vector dates
+x[dates]
+
+# Subset x using dates as POSIXct
+x[as.POSIXct(dates)]
+
+# Replace the values in x contained in the dates vector with NA
+x[dates] <- NA
+
+# Replace all values in x for dates starting June 9, 2016 with 0
+x["2016-06-09/"] <- 0
+
+# Verify that the value in x for June 11, 2016 is now indeed 0
+x["2016-06-11"]
+
+# Create lastweek using the last 1 week of temps
+lastweek <- last(temps, "1 week")
+
+# Print the last 2 observations in lastweek
+last(lastweek, 2)
+
+# Extract all but the first two days of lastweek
+first(lastweek, "-2 days")
+
+# Extract the first three days of the second week of temps
+first(last(first(temps, "2 weeks"), "1 week"), "3 days")
+
+# xts objects respect time. By design when you perform any binary operation using two xts objects, these objects are first aligned
+# using the intersection of the indexes. This may be surprising when first encountered.
+# The reason for this is that you want to preserve the point-in-time aspect of your data, assuring that you don't introduce accidental 
+# look ahead (or look behind!) bias into your calculations.
+
+
+# Add a and b
+a + b
+
+> a
+           a
+2015-01-24 1
+2015-01-25 1
+2015-01-26 1
+> b
+           b
+2015-01-24 2
+
+# Add a and b
+a + b
+> a + b
+           a
+2015-01-24 3
+
+# Add a with the numeric value of b
+a + as.numeric(b)
+
+# Add a to b, and fill all missing rows of b with 0
+a + merge(b, index(a), fill = 0)
+
+# Add a to b and fill NAs with the last observation
+a + merge(b, index(a), fill = na.locf)
