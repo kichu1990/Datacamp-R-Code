@@ -1,6 +1,12 @@
 # Load xts
 library(xts)
 
+# xts objects are simple. Think of them as a matrix of observations combined with an index of corresponding dates and times.
+# xts = matrix + times
+# The main xts constructor takes a number of arguments, but the two most important are x for the data and order.by for the index. 
+# x must be a vector or matrix. order.by is a vector which must be the same length or number of rows as x, be a proper time or date 
+# object (very important!), and be in increasing order.
+
 # View the structure of ex_matrix
 str(ex_matrix)
 
