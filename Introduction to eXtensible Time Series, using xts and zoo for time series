@@ -185,3 +185,62 @@ a + merge(b, index(a), fill = 0)
 
 # Add a to b and fill NAs with the last observation
 a + merge(b, index(a), fill = na.locf)
+
+# xts makes it easy to join data by column and row using a few different functions. All results will be correctly ordered in time, 
+# regardless of original frequencies or date class. One of the most important functions to accomplish this is merge(). It takes one or 
+# more series and joins them by column. It's also possible to combine a series with a vector of dates. This is especially useful for 
+#normalizing observations to a fixed calendar.
+# merge() takes three key arguments which we will emphasize here. First is the ..., which lets you pass in an arbitrary number of 
+# objects to combine. The second argument is join, which specifies how to join the series - accepting arguments such as inner or left.
+# This is similar to a relational database join, only here, the index is what we join on. The final argument for this exercise is fill.
+# This keyword specifies what to do with the new values in a series if there is missingness introduced as a result of the merge.
+
+>a
+                    a
+2016-06-05 -1.2070657
+2016-06-08  0.2774292
+2016-06-09  1.0844412
+2016-06-13 -2.3456977
+
+> b
+                    b
+2016-06-05  0.4291247
+2016-06-06  0.5060559
+2016-06-08 -0.5747400
+2016-06-09 -0.5466319
+
+# Perform an inner join of a and b
+merge(a, b, join = "inner")
+
+# Perform a left-join of a and b, fill missing values with 0
+merge(a, b, join = "left", fill = 0)
+
+# Row bind temps_june30 to temps, assign this to temps2
+temps2 <- rbind(temps, temps_june30)
+
+# Row bind temps_july17 and temps_july18 to temps2, call this temps3
+temps3 <- rbind(temps2, temps_july17, temps_july18)
+
+# Fill missing values in temps using the last observation
+na.locf(temps)
+
+# Fill missing values in temps using the next observation
+na.locf(temps, fromLast = TRUE) 
+
+# Create a leading object called lead_x
+lead_x <- lag(x, k = -1)
+
+# Create a lagging object called lag_x
+lag_x  <- lag(x, k = 1)
+
+# Merge your three series together and assign to z
+z <- merge(lead_x, x, lag_x)
+
+# Calculate the first difference of AirPass using lag and subtraction
+diff_by_hand <- AirPass - lag(AirPass)
+
+# Use merge to compare the first parts of diff_by_hand and diff(AirPass)
+merge(head(diff_by_hand), head(diff(AirPass)))
+
+# Calculate the first order 12 month difference of AirPass
+diff(AirPass, lag = 12, differences = 1)
