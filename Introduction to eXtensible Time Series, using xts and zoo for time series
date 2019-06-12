@@ -244,3 +244,47 @@ merge(head(diff_by_hand), head(diff(AirPass)))
 
 # Calculate the first order 12 month difference of AirPass
 diff(AirPass, lag = 12, differences = 1)
+
+One of the benefits to working with time series objects is how easy it is to apply functions by time.
+
+# The main function in xts to facilitate this is endpoints(). It takes a time series (or a vector of times) and returns the locations of 
+# the last observations in each interval.
+
+# The argument on supports a variety of periods, including "years", "quarters", "months", as well as intraday intervals such as "hours",
+# and "minutes". What is returned is a vector starting with 0 and ending with the extent (last row) of your data.
+# In addition to each period, you can find the Kth period by utilizing the k argument. For example, setting the arguments of your 
+# endpoints() call to on = "weeks", k = 2, would generate the final day of every other week in your data. Note that the last value 
+# returned will always be the length of your input data, even if it doesn't correspond to a skipped interval.
+
+# Locate the weeks
+endpoints(temps, on = "weeks")
+
+# Locate every two weeks
+endpoints(temps, on = "weeks", k = 2)
+
+# Calculate the weekly endpoints
+ep <- endpoints(temps, on = "weeks")
+
+# Now calculate the weekly mean and display the results
+period.apply(temps[, "Temp.Mean"], INDEX = ep, FUN = mean)
+
+# The split() function creates a list containing an element for each split. The f argument in split() is a character string describing
+# the period to split by (i.e. "months", "years", etc.).
+
+# Split temps by week
+temps_weekly <- split(temps, f = "weeks")
+
+# Create a list of weekly means, temps_avg, and print this list
+temps_avg <- lapply(X = temps_weekly, FUN = mean)
+
+# Use the proper combination of split, lapply and rbind
+# Use the split()-lapply()-rbind() paradigm, given for you in the script, to find the last 
+# observation in each week in temps. It is stored in temps_1.
+temps_1 <- do.call(rbind, lapply(split(temps, "weeks"), function(w) last(w, n = "1 day")))
+
+# Create last_day_of_weeks using endpoints()
+last_day_of_weeks <- endpoints(temps,on = "weeks")
+
+# Subset temps using last_day_of_weeks 
+temps_2 <- temps[last_day_of_weeks]
+
