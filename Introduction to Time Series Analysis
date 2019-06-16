@@ -1,0 +1,14 @@
+# The most common first step when conducting time series analysis is to display your time series dataset in a visually intuitive format. 
+# The most useful way to view raw time series data in R is to use the print() command, which displays the Start, End, and Frequency of 
+# your data along with the observations.
+# Print the Nile dataset
+print(Nile)
+
+# List the number of observations in the Nile dataset
+length(Nile)
+
+# Display the first 10 elements of the Nile dataset
+head(Nile,n=10)
+
+# Display the last 12 elements of the Nile dataset
+tail(Nile,n=12)
