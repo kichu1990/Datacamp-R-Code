@@ -183,3 +183,5 @@ close_data <- do.call(merge, eapply(data_env, Cl))
 
 # View the head of close_data0000
 head(close_data)
+
+# getSymbols() imports from Yahoo Finance by default. 
