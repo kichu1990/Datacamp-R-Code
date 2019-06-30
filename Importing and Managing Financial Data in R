@@ -388,3 +388,141 @@ xts_10min <- to.period(intraday_xts, period = "minutes", k = 10)
 # Convert raw prices to 1-hour prices
 xts_1hour <- to.period(intraday_xts, period = "hours", k = 1)
 
+# getSymbols() to import a well-formatted CSV. 
+# Load AMZN.csv
+getSymbols("AMZN", src = "csv")
+
+# Look at AMZN structure
+str(AMZN)
+
+# The zoo package provides several functions to import text files as zoo objects. 
+# The main function is read.zoo(), which wraps read.table()
+
+# Import AMZN.csv using read.zoo
+amzn_zoo <- read.zoo("AMZN.csv", sep = ",", header = TRUE)
+
+# Convert to xts
+amzn_xts <- as.xts(amzn_zoo)
+
+# Look at the first few rows of amzn_xts
+head(amzn_xts)
+
+# read.zoo() makes it easy to import data when the date and time are in separate columns. The index.column argument allows you to 
+# specify the name or number of the column(s) containing the index data. That's all you need to do if the date and time are specified 
+# in the standard format ("%Y-%m-%d" for date, and "%H:%M:%S" for time).
+# Read data with read.csv
+une_data <- read.csv("UNE.csv", nrows = 5)
+
+# Look at the structure of une_data
+str(une_data)
+
+# Read data with read.zoo, specifying index columns
+une_zoo <- read.zoo("UNE.csv", index.column = c("Date", "Time"), sep = ",", header = TRUE)
+
+# Look at first few rows of data
+head(une_zoo)
+
+# Read data with read.csv
+two_symbols_data <- read.csv("two_symbols.csv", nrows = 5)
+
+# Look at the structure of two_symbols_data
+str(two_symbols_data)
+
+# Read data with read.zoo, specifying index columns
+two_symbols_zoo <- read.zoo("two_symbols.csv", split = c("Symbol", "Type"), sep = ",", header = TRUE)
+
+# Look at first few rows of data
+head(two_symbols_zoo)
+
+# na.locf() to fill missing values with the previous non-missing value. You can use interpolation when carrying the previous value 
+# forward isn't appropriate. In this exercise, you will explore two interpolation methods: linear and spline.
+# Linear interpolation calculates values that lie on a line between two known data points. This is a good choice for fairly linear 
+# data, like a series with a strong trend. Spline interpolation is more appropriate for series without a strong trend, because it 
+# calculates a non-linear approximation using multiple data points.
+
+# fill NA using last observation carried forward
+locf <- na.locf(DGS10)
+
+# fill NA using linear interpolation
+approx <- na.approx(DGS10)
+
+# fill NA using spline interpolation
+spline <- na.spline(DGS10)
+
+# merge into one object
+na_filled <- merge(locf, approx, spline)
+
+# plot combined object
+plot(na_filled, col = c("black", "red", "green"))
+
+# Look at the last few rows of AAPL data
+tail(AAPL)
+
+# Plot close price
+plot(Cl(AAPL))
+
+# Plot adjusted close price
+plot(Ad(AAPL))
+
+# Look at first few rows of aapl_raw
+head(aapl_raw)
+
+# Look at first few rows of aapl_split_adjusted
+head(aapl_split_adjusted)
+
+# Plot difference between adjusted close and split-adjusted close
+plot(Ad(aapl_raw) - Cl(aapl_split_adjusted))
+
+# Plot difference between volume from the raw and split-adjusted sources
+plot(Vo(aapl_raw) - Vo(aapl_split_adjusted))
+
+# Stock splits can create large historical price changes even though they do not change the value of the company. So, you must adjust 
+# all pre-split prices in order to calculate historical returns correctly.
+# Similarly, you must adjust all pre-dividend prices. Dividends do reduce the company's value by the amount of the dividend payment, 
+# but the investor's return isn't affected because they receive the offsetting dividend payment.
+# In this exercise, you will learn how to use the adjustOHLC() function to adjust raw historical OHLC prices for splits and dividends, 
+# so historical returns can be calculated accurately.
+# Yahoo Finance provides raw prices and a split- and dividend-adjusted close column. The output of adjustOHLC() should match Yahoo's 
+# adjusted close column. AAPL data from Yahoo Finance is already loaded in your workspace.
+
+# Look at first few rows of AAPL
+head(AAPL)
+
+# Adjust AAPL for splits and dividends
+aapl_adjusted <- adjustOHLC(AAPL)
+
+# Look at first few rows of aapl_adjusted
+head(aapl_adjusted)
+
+# Download AAPL split data
+splits <- getSplits("AAPL")
+
+# Download AAPL dividend data
+dividends <- getDividends("AAPL")
+
+# Look at the first few rows of dividends
+head(dividends)
+
+# Download unadjusted AAPL dividend data
+raw_dividends <- getDividends("AAPL", split.adjust = FALSE)
+
+# Look at the first few rows of raw_dividends
+head(raw_dividends)
+
+# If you only have close prices, you can adjust them with adjRatios(). It has 3 arguments: splits, dividends, and close. It returns an 
+# xts object with split and dividend adjustment ratios in columns "Split" and "Div", respectively.
+# You need to provide split data via the splits argument to calculate the split ratio. To calculate the dividend ratio, you need to
+# provide raw dividends and raw prices via the dividends and close arguments, respectively.
+# Once you have the split and dividend adjustment ratios, you calculate the adjusted price multiplying the unadjusted price by both 
+# the split and dividend adjustment ratios.
+# Calculate split and dividend adjustment ratios
+ratios <- adjRatios(splits = splits, dividends = raw_dividends, close = Cl(AAPL))
+
+# Calculate adjusted close for AAPL
+aapl_adjusted <- Cl(AAPL) * ratios[, "Split"] * ratios[, "Div"]
+
+# Look at first few rows of Yahoo adjusted close
+head(Ad(AAPL))
+
+# Look at first few rows of aapl_adjusted
+head(aapl_adjusted)
