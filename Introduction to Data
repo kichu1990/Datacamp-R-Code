@@ -1,0 +1,20 @@
+# inner_join() function of dplyr needs to be given a "key" on which two data frames are joined. Actually, multiple keys that need to match 
+# can be specified
+# Join both data frames
+ilo_data <- ilo_hourly_compensation %>%
+  inner_join(ilo_working_hours, by = c("country","year"))
+
+# Count the resulting rows
+ilo_data  %>% 
+    count()
+
+# Examine ilo_data
+ilo_data
+
+# For displaying data in ggplot2 graphics, it is often helpful to convert all the variables to the right data type. Usually, 
+# categorical variables like country in this example should be converted to factors before plotting them. You can do so using as.factor().
+# In your data set, two columns are still of type "character" – use mutate() to turn them into factors.
+
+ilo_data_corrected <- ilo_data %>%
+  mutate(year = as.factor(as.numeric(year)),
+        country = as.factor(country))
