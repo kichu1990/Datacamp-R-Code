@@ -1,0 +1,11 @@
+# To find out where you are in the filesystem, run the command pwd (short for "print working directory"). This prints the absolute 
+# path of your current working directory, which is where the shell runs commands and looks for files by default.
+
+# Use ls with an appropriate argument to list the files in the directory
+
+# An absolute path is like a latitude and longitude: it has the same value no matter where you are. A relative path, on the other hand, specifies a location starting from where you are: it's like saying "20 kilometers north".
+
+# For example, if you are in the directory /home/repl, the relative path seasonal specifies the same directory as /home/repl/seasonal, 
+# while seasonal/winter.csv specifies the same file as /home/repl/seasonal/winter.csv. The shell decides if a path is absolute or 
+# relative by looking at its first character: if it begins with /, it is absolute, and if it doesn't, it is relative.
+
