@@ -196,3 +196,20 @@ ggplot(mtcars, aes(x = wt, y = mpg, shape = cyl)) +
 # Map cyl to labels
 ggplot(mtcars, aes(x = wt, y = mpg, label = cyl)) +
   geom_text()
+
+# Define a hexadecimal color
+my_color <- "#4ABEFF"
+
+# Draw a scatter plot with color *aesthetic*
+ggplot(mtcars, aes(x = wt, y = mpg, color = cyl)) +
+  geom_point()
+
+# Same, but set color *attribute* in geom layer 
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point(color=my_color)
+
+# Set the fill aesthetic; color, size and shape attributes
+ggplot(mtcars, aes(x = wt, y = mpg,fill=cyl)) +
+  geom_point(shape=23,size=10,color=my_color)
+
+
