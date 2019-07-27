@@ -1,4 +1,61 @@
 # Load data
+data(email50)
+
+# View the structure of the data
+str(email50)
+
+# Glimpse email50
+glimpse(email50)
+
+# Subset of emails with big numbers: email50_big
+email50_big <- email50 %>%
+  filter(number =="big")
+
+# Glimpse the subset
+glimpse(email50_big)
+
+# Table of the number variable
+table(email50_big$number)
+
+# Drop levels
+email50_big$number <- droplevels(email50_big$number)
+
+# Another table of the number variable
+table(email50_big$number)
+
+# Calculate median number of characters: med_num_char
+med_num_char <- median(email50$num_char)
+
+# Create num_char_cat variable in email50
+email50_fortified <- email50 %>%
+  mutate(num_char_cat = ifelse(num_char < med_num_char, "below median", "at or above median"))
+  
+# Count emails in each category
+email50_fortified %>%
+  count(num_char_cat)
+
+# Create number_yn variable in email50
+email50_fortified <- email50 %>%
+  mutate(
+    number_yn = case_when(
+      # if number is "none", make number_yn "no"
+      number == "none" ~ "no",
+      # if number is not "none", make number_yn "yes"
+      number != "none" ~ "yes"
+    )
+  )
+
+# Visualize the distribution of number_yn
+ggplot(email50_fortified, aes(x = number_yn)) +
+  geom_bar()
+  
+# Load ggplot2
+library(ggplot2)
+
+# Scatterplot of exclaim_mess vs. num_char
+ggplot(email50, aes(x = num_char, y = exclaim_mess, color = factor(spam))) +geom_point()
+
+# Load data
 data(gapminder)
 
 # Glimpse data
@@ -6,3 +63,33 @@ glimpse(gapminder)
 
 # Identify type of study: observational or experimental
 type_of_study <- "observational"
+
+# Load packages
+library(dplyr)
+
+# Count number of male and female applicants admitted
+ucb_admit %>%
+  count(Gender,Admit)
+  
+ucb_admission_counts %>%
+  # Group by gender
+  group_by(Gender) %>%
+  # Create new variable
+  mutate(prop = n / sum(n)) %>%
+  # Filter for admitted
+  filter(Admit == "Admitted")
+  
+ucb_admission_counts <- ucb_admit %>%
+  # Counts by department, then gender, then admission status
+  count(Dept,Gender,Admit)
+
+# See the result
+ucb_admission_counts
+
+ucb_admission_counts  %>%
+  # Group by department, then gender
+  group_by(Dept,Gender) %>%
+  # Create new variable
+  mutate(prop = n / sum(n)) %>%
+  # Filter for male and admitted
+  filter(Gender=='Male' & Admit=='Admitted')
