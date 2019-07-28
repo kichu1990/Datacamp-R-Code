@@ -250,3 +250,18 @@ ilo_dot_plot +
     # Also, let's reduce the font size of the subtitle
     plot.subtitle = element_text(size = 9)
   )
+  
+---
+title: "Communicating with Data in the Tidyverse" 
+author: "DataCamp"
+date: "March 2018"
+output: html_document
+---
+
+The following plot shows the relationship between the number of cylinders and miles per gallon in the `mtcars` dataset.
+
+```{r}
+boxplot(mtcars$mpg ~ mtcars$cyl)
+```
+
+As one can see, the more cylinders, the less miles per gallons.
