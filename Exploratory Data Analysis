@@ -106,3 +106,52 @@ cars %>%
   geom_histogram() +
   xlim(c(90, 550)) +
   ggtitle("Distribution of horsepower for affordable cars")
+  
+# Create hist of horsepwr with binwidth of 3
+cars %>%
+  ggplot(aes(horsepwr)) +
+  geom_histogram(binwidth = 3) +
+  ggtitle("binwidth3")
+
+# Create hist of horsepwr with binwidth of 30
+cars %>%
+  ggplot(aes(horsepwr)) +
+  geom_histogram(binwidth = 30) +
+  ggtitle("binwidth30")
+
+# Create hist of horsepwr with binwidth of 60
+cars %>%
+  ggplot(aes(horsepwr)) +
+  geom_histogram(binwidth = 60) +
+  ggtitle("binwidth60")
+
+# Construct box plot of msrp
+cars %>%
+  ggplot(aes(x = 1, y = msrp)) +
+  geom_boxplot()
+
+# Exclude outliers from data
+cars_no_out <- cars %>%
+  filter(msrp < 100000)
+  
+# Construct box plot of msrp using the reduced dataset
+cars_no_out %>%
+  ggplot(aes(x = 1, y = msrp)) +
+  geom_boxplot()
+  
+# Create plot of city_mpg
+cars %>%
+  ggplot(aes(x = 1, y = city_mpg)) +
+  geom_boxplot()
+
+# Create plot of width
+cars %>% 
+  ggplot(aes(x = width)) +
+  geom_density()
+  
+# Facet hists using hwy mileage and ncyl
+common_cyl %>%
+  ggplot(aes(x = hwy_mpg)) +
+  geom_histogram() +
+  facet_grid(ncyl ~ suv) +
+  ggtitle("Facet hists using hwy mileage and ncyl")
